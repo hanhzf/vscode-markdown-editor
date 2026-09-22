@@ -42,9 +42,14 @@ export function confirm(msg, onOk) {
 // 切换 content-theme 时自动修改 vditor theme
 export function fixDarkTheme() {
   let $ct = document.querySelector('[data-type="content-theme"]')
+  document.body.setAttribute(
+    'data-content-theme',
+    vditor.vditor.options.preview.theme.current
+  )
   $ct.nextElementSibling.addEventListener('click', (e) => {
     if ((e.target as any).tagName !== 'BUTTON') return
     let type = (e.target as any).getAttribute('data-type')
+    document.body.setAttribute('data-content-theme', type)
     if (type === 'dark') {
       vditor.setTheme(type)
     } else {

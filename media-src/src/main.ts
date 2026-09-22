@@ -179,15 +179,18 @@ function initVditor(msg) {
       }
     }
   })
-  // Apply theme from VS Code AFTER merge so it takes precedence over stored options
-  if (msg.theme === 'dark') {
-    defaultOptions.theme = 'dark'
-    defaultOptions.preview = defaultOptions.preview || {}
-    defaultOptions.preview.theme = { current: 'dark' }
-  } else if (msg.theme === 'light') {
-    defaultOptions.theme = 'classic'
-    defaultOptions.preview = defaultOptions.preview || {}
-    defaultOptions.preview.theme = { current: 'light' }
+  // Follow the VS Code theme until the user explicitly chooses a content theme.
+  // A saved content theme must win so it survives closing and reopening the editor.
+  if (!defaultOptions.preview?.theme?.current) {
+    if (msg.theme === 'dark') {
+      defaultOptions.theme = 'dark'
+      defaultOptions.preview = defaultOptions.preview || {}
+      defaultOptions.preview.theme = { current: 'dark' }
+    } else if (msg.theme === 'light') {
+      defaultOptions.theme = 'classic'
+      defaultOptions.preview = defaultOptions.preview || {}
+      defaultOptions.preview.theme = { current: 'light' }
+    }
   }
   if (window.vditor) {
     vditor.destroy()

@@ -20,6 +20,13 @@ body[data-use-vscode-theme-color="1"] .vditor {
   --toolbar-background-color: var(--vscode-editor-background);
   --textarea-background-color: var(--vscode-editor-background);
 }
+/* Ant Design is a light content theme. Preserve its white canvas instead of
+   mixing its dark text with VS Code's dark editor background. */
+body[data-content-theme="ant-design"] .vditor {
+  --panel-background-color: #fff;
+  --toolbar-background-color: #fff;
+  --textarea-background-color: #fff;
+}
 /* fix font family */
 .vditor .vditor-reset {
   font-family: var(--vscode-editor-font-family)!important;
