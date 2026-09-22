@@ -20,9 +20,12 @@ body[data-use-vscode-theme-color="1"] .vditor {
   --toolbar-background-color: var(--vscode-editor-background);
   --textarea-background-color: var(--vscode-editor-background);
 }
-/* Ant Design is a light content theme. Preserve its white canvas instead of
-   mixing its dark text with VS Code's dark editor background. */
-body[data-content-theme="ant-design"] .vditor {
+/* Vditor's built-in Ant Design, Light, and WeChat content themes are light.
+   Preserve their white canvas instead of mixing their dark text with VS Code's
+   dark editor background when useVscodeThemeColor is enabled. */
+body[data-content-theme="ant-design"] .vditor,
+body[data-content-theme="light"] .vditor,
+body[data-content-theme="wechat"] .vditor {
   --panel-background-color: #fff;
   --toolbar-background-color: #fff;
   --textarea-background-color: #fff;
