@@ -11,22 +11,6 @@ function showError(msg: string) {
 }
 
 /**
- * True when a document change came from disk rather than from the webview.
- *
- * Webview edits reach the document through applyEdit and always leave it dirty, so a
- * content change that leaves the document clean can only be VS Code reloading a file
- * that another program wrote. That also means there is no pending webview edit to
- * clobber: if the webview had unsynced content, the document would still be dirty.
- *
- * The contentChanges check matters: onDidChangeTextDocument also fires for pure
- * dirty-state transitions with an empty contentChanges array, so every save (incl.
- * autosave) emits a clean-document event that must not be mistaken for a reload.
- */
-function isExternalReload(e: vscode.TextDocumentChangeEvent) {
-  return e.contentChanges.length > 0 && !e.document.isDirty
-}
-
-/**
  * Opens external URIs directly and resolves local links from the Markdown file.
  */
 async function openMarkdownLink(markdownFileUri: vscode.Uri, href: string) {
@@ -131,6 +115,7 @@ class EditorPanel {
   static appVisibilityCss = `#app{opacity:0}body[data-vmd-ready="1"][data-vmd-css-loaded="1"] #app{opacity:1}`
 
   private _disposables: vscode.Disposable[] = []
+  private _pendingWebviewEdits = 0
 
   public static async createOrShow(
     context: vscode.ExtensionContext,
@@ -402,10 +387,9 @@ class EditorPanel {
       if (e.document.fileName !== this._document.fileName) {
         return
       }
-      // Don't echo the webview's own edits back at it, but always take a change that
-      // came from disk: the panel stays "active" while another program has focus, so
-      // this would otherwise drop every external edit.
-      if (this._panel.active && !isExternalReload(e)) {
+      // Never echo an edit back to the Vditor instance that produced it. Calling
+      // setValue for that echo resets Vditor's caret to the start of the document.
+      if (this._pendingWebviewEdits > 0 || e.contentChanges.length === 0) {
         return
       }
       textEditTimer && clearTimeout(textEditTimer)
@@ -422,13 +406,21 @@ class EditorPanel {
         const syncToEditor = async () => {
           debug('sync to editor', this._document, this._uri)
           if (this._document) {
+            if (this._document.getText() === message.content) {
+              return
+            }
             const edit = new vscode.WorkspaceEdit()
             edit.replace(
               this._document.uri,
               new vscode.Range(0, 0, this._document.lineCount, 0),
               message.content
             )
-            await vscode.workspace.applyEdit(edit)
+            this._pendingWebviewEdits++
+            try {
+              await vscode.workspace.applyEdit(edit)
+            } finally {
+              this._pendingWebviewEdits--
+            }
           } else if (this._uri) {
             await vscode.workspace.fs.writeFile(this._uri, message.content)
           } else {
@@ -665,6 +657,7 @@ class MarkdownEditorProvider implements vscode.CustomTextEditorProvider {
 
     const disposables: vscode.Disposable[] = []
     let isEditing = false
+    let pendingWebviewEdits = 0
 
     // Update title to show edit status
     const updateEditTitle = () => {
@@ -699,9 +692,9 @@ class MarkdownEditorProvider implements vscode.CustomTextEditorProvider {
       if (e.document.fileName !== document.fileName) {
         return
       }
-      // Don't echo the webview's own edits back at it, but always take a change that
-      // came from disk - see isExternalReload.
-      if (webviewPanel.active && !isExternalReload(e)) {
+      // Never echo an edit back to the Vditor instance that produced it. Calling
+      // setValue for that echo resets Vditor's caret to the start of the document.
+      if (pendingWebviewEdits > 0 || e.contentChanges.length === 0) {
         return
       }
       updateWebview()
@@ -713,13 +706,21 @@ class MarkdownEditorProvider implements vscode.CustomTextEditorProvider {
       debug('msg from webview', message, webviewPanel.active)
 
       const syncToEditor = async () => {
+        if (document.getText() === message.content) {
+          return
+        }
         const edit = new vscode.WorkspaceEdit()
         edit.replace(
           document.uri,
           new vscode.Range(0, 0, document.lineCount, 0),
           message.content
         )
-        await vscode.workspace.applyEdit(edit)
+        pendingWebviewEdits++
+        try {
+          await vscode.workspace.applyEdit(edit)
+        } finally {
+          pendingWebviewEdits--
+        }
       }
 
       switch (message.command) {

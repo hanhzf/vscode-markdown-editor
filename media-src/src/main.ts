@@ -278,7 +278,7 @@ window.addEventListener('message', (e) => {
           saveVditorOptions()
         }
         console.log('initVditor')
-      } else {
+      } else if (msg.content !== vditor.getValue()) {
         vditor.setValue(msg.content)
         console.log('setValue')
       }
