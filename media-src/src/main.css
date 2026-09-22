@@ -27,6 +27,11 @@ body[data-content-theme="ant-design"] .vditor {
   --toolbar-background-color: #fff;
   --textarea-background-color: #fff;
 }
+body[data-content-theme="ant-design"] .vditor-reset blockquote {
+  background-color: #fff !important;
+  color: rgba(0, 0, 0, .45) !important;
+  border-left-color: #f0f0f0 !important;
+}
 /* fix font family */
 .vditor .vditor-reset {
   font-family: var(--vscode-editor-font-family)!important;
