@@ -94,6 +94,19 @@
           "default": false,
           "description": "Open the outline by default when opening a markdown editor."
         },
+        "markdown-editor.mermaidStyle": {
+          "type": "string",
+          "default": "follow-editor",
+          "enum": [
+            "follow-editor",
+            "professional-light"
+          ],
+          "enumDescriptions": [
+            "Follow the editor's light or dark Mermaid theme.",
+            "Use a light professional theme with Chinese-friendly fonts and roomier flowcharts."
+          ],
+          "description": "Visual style for Mermaid diagrams. Reopen Markdown Editor after changing this setting."
+        },
         "markdown-editor.customCss": {
           "type": "string",
           "default": ""

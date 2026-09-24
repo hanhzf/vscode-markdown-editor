@@ -1,5 +1,5 @@
 diff --git a/dist/index.js b/dist/index.js
-index b76cd1e703c5532e13453ef21ba7126efcd44c06..dd52c9563754e8affd9b1722711ccf11fb152394 100644
+index b76cd1e703c5532e13453ef21ba7126efcd44c06..0fbb7fc2362e5dbc414b84aa16eeec4ea5799ba0 100644
 --- a/dist/index.js
 +++ b/dist/index.js
 @@ -3600,7 +3600,7 @@ var mermaidRender = function (element, cdn, theme) {
@@ -11,8 +11,37 @@ index b76cd1e703c5532e13453ef21ba7126efcd44c06..dd52c9563754e8affd9b1722711ccf11
          var config = {
              securityLevel: "loose",
              altFontFamily: "sans-serif",
+@@ -3622,9 +3622,25 @@ var mermaidRender = function (element, cdn, theme) {
+                 rightPadding: 20
+             }
+         };
+-        if (theme === "dark") {
+-            config.theme = "dark";
+-        }
++    if (window.__vmdMermaidStyle === "professional-light") {
++      config.theme = "base";
++      config.themeVariables = {
++        background: "#ffffff",
++        fontFamily: "PingFang SC, Microsoft YaHei, Arial, sans-serif",
++        primaryColor: "#E8F3FF",
++        primaryTextColor: "#1F2937",
++        primaryBorderColor: "#5B8FF9",
++        lineColor: "#64748B",
++        secondaryColor: "#F8FAFC",
++        tertiaryColor: "#F1F5F9"
++      };
++      config.flowchart = Object.assign({}, config.flowchart, {
++        nodeSpacing: 48,
++        rankSpacing: 64
++      });
++    } else if (theme === "dark") {
++      config.theme = "dark";
++    }
+         mermaid.initialize(config);
+         mermaidElements.forEach(function (item) { return __awaiter(void 0, void 0, void 0, function () {
+             var code, id, mermaidData, e_1, errorElement;
 diff --git a/src/ts/markdown/mermaidRender.ts b/src/ts/markdown/mermaidRender.ts
-index 6128ac14930dc3a192e06a46b3abecf66f8cb643..fff23ddf0f5ef6f4e3ec43375610539111c54d2d 100644
+index 6128ac14930dc3a192e06a46b3abecf66f8cb643..d59a910d3ea8c86ca977c5832bcfcaaf98573585 100644
 --- a/src/ts/markdown/mermaidRender.ts
 +++ b/src/ts/markdown/mermaidRender.ts
 @@ -13,7 +13,7 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
@@ -24,3 +53,29 @@ index 6128ac14930dc3a192e06a46b3abecf66f8cb643..fff23ddf0f5ef6f4e3ec433756105391
          const config: any = {
              securityLevel: "loose", // 升级后无 https://github.com/siyuan-note/siyuan/issues/3587，可使用该选项
              altFontFamily: "sans-serif",
+@@ -35,7 +35,24 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
+                 rightPadding: 20
+             }
+         };
+-        if (theme === "dark") {
++        if ((window as any).__vmdMermaidStyle === "professional-light") {
++            config.theme = "base";
++            config.themeVariables = {
++                background: "#ffffff",
++                fontFamily: "PingFang SC, Microsoft YaHei, Arial, sans-serif",
++                primaryColor: "#E8F3FF",
++                primaryTextColor: "#1F2937",
++                primaryBorderColor: "#5B8FF9",
++                lineColor: "#64748B",
++                secondaryColor: "#F8FAFC",
++                tertiaryColor: "#F1F5F9",
++            };
++            config.flowchart = {
++                ...config.flowchart,
++                nodeSpacing: 48,
++                rankSpacing: 64,
++            };
++        } else if (theme === "dark") {
+             config.theme = "dark";
+         }
+         mermaid.initialize(config);

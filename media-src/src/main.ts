@@ -192,6 +192,8 @@ function initVditor(msg) {
       defaultOptions.preview.theme = { current: 'light' }
     }
   }
+  ;(window as any).__vmdMermaidStyle = defaultOptions.mermaidStyle
+  delete defaultOptions.mermaidStyle
   if (window.vditor) {
     vditor.destroy()
     window.vditor = null

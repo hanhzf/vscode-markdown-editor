@@ -234,6 +234,7 @@ class EditorPanel {
         ) === true,
       },
       ...context.globalState.get(KeyVditorOptions),
+      mermaidStyle: EditorPanel.config.get<string>('mermaidStyle'),
     }
   }
 
