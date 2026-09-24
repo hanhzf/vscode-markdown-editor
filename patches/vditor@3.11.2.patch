@@ -1,5 +1,5 @@
 diff --git a/dist/index.js b/dist/index.js
-index b76cd1e703c5532e13453ef21ba7126efcd44c06..1aa2e63ae3b33cf1fdd1cc54a40eabafb01afd1f 100644
+index b76cd1e703c5532e13453ef21ba7126efcd44c06..b16f20a8daf18f48ec349abedae2658a7a49d41c 100644
 --- a/dist/index.js
 +++ b/dist/index.js
 @@ -3600,7 +3600,7 @@ var mermaidRender = function (element, cdn, theme) {
@@ -11,7 +11,7 @@ index b76cd1e703c5532e13453ef21ba7126efcd44c06..1aa2e63ae3b33cf1fdd1cc54a40eabaf
          var config = {
              securityLevel: "loose",
              altFontFamily: "sans-serif",
-@@ -3622,7 +3622,41 @@ var mermaidRender = function (element, cdn, theme) {
+@@ -3622,7 +3622,43 @@ var mermaidRender = function (element, cdn, theme) {
                  rightPadding: 20
              }
          };
@@ -28,9 +28,11 @@ index b76cd1e703c5532e13453ef21ba7126efcd44c06..1aa2e63ae3b33cf1fdd1cc54a40eabaf
 +        secondaryColor: "#F8FAFC",
 +        tertiaryColor: "#F1F5F9"
 +      };
++      config.themeCSS = "\n                .node rect { rx: 20px; ry: 20px; }\n                .node rect, .node circle, .node ellipse, .node polygon {\n                    stroke-width: 1px !important;\n                }\n                .nodeLabel, .edgeLabel { font-weight: 600; }\n                .flowchart-link {\n                    stroke-width: 1.25px !important;\n                    stroke-linecap: round;\n                    stroke-linejoin: round;\n                }\n                .edgeLabel rect {\n                    fill: #ffffff !important;\n                    stroke: #D6E4FF !important;\n                    stroke-width: 1px !important;\n                    rx: 14px;\n                    ry: 14px;\n                }\n            ";
 +      config.flowchart = Object.assign({}, config.flowchart, {
-+        nodeSpacing: 48,
-+        rankSpacing: 64
++        nodeSpacing: 56,
++        rankSpacing: 72,
++        curve: "stepAfter"
 +      });
 +    } else if (window.__vmdMermaidStyle === "github-soft") {
 +      config.theme = "base";
@@ -55,7 +57,7 @@ index b76cd1e703c5532e13453ef21ba7126efcd44c06..1aa2e63ae3b33cf1fdd1cc54a40eabaf
          }
          mermaid.initialize(config);
 diff --git a/src/ts/markdown/mermaidRender.ts b/src/ts/markdown/mermaidRender.ts
-index 6128ac14930dc3a192e06a46b3abecf66f8cb643..0593dde5c7f7f8304de18f133de85873193a687d 100644
+index 6128ac14930dc3a192e06a46b3abecf66f8cb643..1a2d9eba2ce017529b56adbf496fe9c453ebc625 100644
 --- a/src/ts/markdown/mermaidRender.ts
 +++ b/src/ts/markdown/mermaidRender.ts
 @@ -13,7 +13,7 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
@@ -67,7 +69,7 @@ index 6128ac14930dc3a192e06a46b3abecf66f8cb643..0593dde5c7f7f8304de18f133de85873
          const config: any = {
              securityLevel: "loose", // 升级后无 https://github.com/siyuan-note/siyuan/issues/3587，可使用该选项
              altFontFamily: "sans-serif",
-@@ -35,7 +35,61 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
+@@ -35,7 +35,81 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
                  rightPadding: 20
              }
          };
@@ -84,10 +86,30 @@ index 6128ac14930dc3a192e06a46b3abecf66f8cb643..0593dde5c7f7f8304de18f133de85873
 +                secondaryColor: "#F8FAFC",
 +                tertiaryColor: "#F1F5F9",
 +            };
++            config.themeCSS = `
++                .node rect { rx: 20px; ry: 20px; }
++                .node rect, .node circle, .node ellipse, .node polygon {
++                    stroke-width: 1px !important;
++                }
++                .nodeLabel, .edgeLabel { font-weight: 600; }
++                .flowchart-link {
++                    stroke-width: 1.25px !important;
++                    stroke-linecap: round;
++                    stroke-linejoin: round;
++                }
++                .edgeLabel rect {
++                    fill: #ffffff !important;
++                    stroke: #D6E4FF !important;
++                    stroke-width: 1px !important;
++                    rx: 14px;
++                    ry: 14px;
++                }
++            `;
 +            config.flowchart = {
 +                ...config.flowchart,
-+                nodeSpacing: 48,
-+                rankSpacing: 64,
++                nodeSpacing: 56,
++                rankSpacing: 72,
++                curve: "stepAfter",
 +            };
 +        } else if ((window as any).__vmdMermaidStyle === "github-soft") {
 +            config.theme = "base";
