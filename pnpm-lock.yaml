@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   vditor@3.11.2:
-    hash: a91940ba14c10ebae39a4f9862e46ca6989baeb419d5ff7cd6f6082837fa874b
+    hash: 1f05e683383b4e82140fd7033016b7fd4cb1975f7e3d671c03da5c60e1a536b2
     path: patches/vditor@3.11.2.patch
 
 importers:
@@ -60,7 +60,7 @@ importers:
         version: 4.18.1
       vditor:
         specifier: ^3.8.4
-        version: 3.11.2(patch_hash=a91940ba14c10ebae39a4f9862e46ca6989baeb419d5ff7cd6f6082837fa874b)
+        version: 3.11.2(patch_hash=1f05e683383b4e82140fd7033016b7fd4cb1975f7e3d671c03da5c60e1a536b2)
     devDependencies:
       '@types/node':
         specifier: ^14.14.41
@@ -897,7 +897,7 @@ snapshots:
 
   typescript@4.9.5: {}
 
-  vditor@3.11.2(patch_hash=a91940ba14c10ebae39a4f9862e46ca6989baeb419d5ff7cd6f6082837fa874b):
+  vditor@3.11.2(patch_hash=1f05e683383b4e82140fd7033016b7fd4cb1975f7e3d671c03da5c60e1a536b2):
     dependencies:
       diff-match-patch: 1.0.5
 
