@@ -1,0 +1,26 @@
+diff --git a/dist/index.js b/dist/index.js
+index b76cd1e703c5532e13453ef21ba7126efcd44c06..dd52c9563754e8affd9b1722711ccf11fb152394 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -3600,7 +3600,7 @@ var mermaidRender = function (element, cdn, theme) {
+     if (mermaidElements.length === 0) {
+         return;
+     }
+-    (0,_util_addScript__WEBPACK_IMPORTED_MODULE_2__/* .addScript */ .G)("".concat(cdn, "/dist/js/mermaid/mermaid.min.js?v=11.6.0"), "vditorMermaidScript").then(function () {
++    (0,_util_addScript__WEBPACK_IMPORTED_MODULE_2__/* .addScript */ .G)("https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js", "vditorMermaidScript").then(function () {
+         var config = {
+             securityLevel: "loose",
+             altFontFamily: "sans-serif",
+diff --git a/src/ts/markdown/mermaidRender.ts b/src/ts/markdown/mermaidRender.ts
+index 6128ac14930dc3a192e06a46b3abecf66f8cb643..fff23ddf0f5ef6f4e3ec43375610539111c54d2d 100644
+--- a/src/ts/markdown/mermaidRender.ts
++++ b/src/ts/markdown/mermaidRender.ts
+@@ -13,7 +13,7 @@ export const mermaidRender = (element: (HTMLElement | Document) = document, cdn
+     if (mermaidElements.length === 0) {
+         return;
+     }
+-    addScript(`${cdn}/dist/js/mermaid/mermaid.min.js?v=11.6.0`, "vditorMermaidScript").then(() => {
++    addScript("https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js", "vditorMermaidScript").then(() => {
+         const config: any = {
+             securityLevel: "loose", // 升级后无 https://github.com/siyuan-note/siyuan/issues/3587，可使用该选项
+             altFontFamily: "sans-serif",
