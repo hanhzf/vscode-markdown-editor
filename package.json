@@ -99,11 +99,13 @@
           "default": "follow-editor",
           "enum": [
             "follow-editor",
-            "professional-light"
+            "professional-light",
+            "github-soft"
           ],
           "enumDescriptions": [
             "Follow the editor's light or dark Mermaid theme.",
-            "Use a light professional theme with Chinese-friendly fonts and roomier flowcharts."
+            "Use a light professional theme with Chinese-friendly fonts and roomier flowcharts.",
+            "Use a soft GitHub-inspired light theme with rounded nodes and gentle connectors."
           ],
           "description": "Visual style for Mermaid diagrams. Reopen Markdown Editor after changing this setting."
         },
